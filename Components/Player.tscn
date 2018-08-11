@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/player_placeholder_archer.png" type="Texture" id=2]
@@ -9,7 +9,7 @@ content_margin_left = -1.0
 content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
-bg_color = Color( 0.707031, 0, 0, 1 )
+bg_color = Color( 0.482178, 0.78125, 0, 1 )
 draw_center = true
 border_width_left = 0
 border_width_top = 0
@@ -37,18 +37,47 @@ content_margin_left = -1.0
 content_margin_right = -1.0
 content_margin_top = -1.0
 content_margin_bottom = -1.0
-bg_color = Color( 0.450836, 0.730469, 0, 1 )
+bg_color = Color( 0.730469, 0, 0, 0.983412 )
 draw_center = false
+border_width_left = 0
+border_width_top = 0
+border_width_right = 0
+border_width_bottom = 0
+border_color = Color( 1, 1, 1, 0 )
+border_blend = true
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+corner_detail = 8
+expand_margin_left = 0.0
+expand_margin_right = 0.0
+expand_margin_top = 0.0
+expand_margin_bottom = 0.0
+shadow_color = Color( 1, 1, 1, 0.6 )
+shadow_size = 0
+anti_aliasing = false
+anti_aliasing_size = 1
+_sections_unfolded = [ "Anti Aliasing", "Border", "Border Width", "Corner Radius", "Expand Margin", "Shadow" ]
+
+[sub_resource type="StyleBoxFlat" id=3]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+bg_color = Color( 0, 0.746094, 0.676147, 1 )
+draw_center = true
 border_width_left = 0
 border_width_top = 0
 border_width_right = 0
 border_width_bottom = 0
 border_color = Color( 0.8, 0.8, 0.8, 1 )
 border_blend = false
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
 corner_detail = 8
 expand_margin_left = 0.0
 expand_margin_right = 0.0
@@ -58,9 +87,36 @@ shadow_color = Color( 0, 0, 0, 0.6 )
 shadow_size = 0
 anti_aliasing = true
 anti_aliasing_size = 1
-_sections_unfolded = [ "Corner Radius", "Expand Margin" ]
 
-[node name="Player" type="Node2D"]
+[sub_resource type="StyleBoxFlat" id=4]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+bg_color = Color( 0.234375, 0.234375, 0.234375, 1 )
+draw_center = true
+border_width_left = 0
+border_width_top = 0
+border_width_right = 0
+border_width_bottom = 0
+border_color = Color( 0.8, 0.8, 0.8, 1 )
+border_blend = false
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+corner_detail = 8
+expand_margin_left = 0.0
+expand_margin_right = 0.0
+expand_margin_top = 0.0
+expand_margin_bottom = 0.0
+shadow_color = Color( 0, 0, 0, 0.6 )
+shadow_size = 0
+anti_aliasing = true
+anti_aliasing_size = 1
+
+[node name="Player" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 
@@ -77,9 +133,10 @@ anchor_top = 0.0
 anchor_right = 0.0
 anchor_bottom = 0.0
 margin_left = -28.0
-margin_top = -57.0
+margin_top = -42.0
 margin_right = 27.0
-margin_bottom = -41.0
+margin_bottom = -37.0
+grow_horizontal = 0
 rect_pivot_offset = Vector2( 0, 0 )
 rect_clip_content = false
 mouse_filter = 0
@@ -98,7 +155,36 @@ rounded = true
 percent_visible = false
 _sections_unfolded = [ "Focus", "Grow Direction", "Margin", "Percent", "Rect", "Theme", "Visibility", "custom_colors", "custom_styles" ]
 
-[node name="Radius" type="Node2D" parent="." index="2"]
+[node name="APIndicator" type="ProgressBar" parent="." index="2"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+margin_left = -28.0
+margin_top = -49.0
+margin_right = 27.0
+margin_bottom = -44.0
+grow_horizontal = 0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 0
+custom_styles/fg = SubResource( 3 )
+custom_styles/bg = SubResource( 4 )
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+page = 0.0
+value = 30.0
+exp_edit = false
+rounded = true
+percent_visible = false
+_sections_unfolded = [ "Focus", "Grow Direction", "Margin", "Percent", "Rect", "Theme", "Visibility", "custom_colors", "custom_styles" ]
+
+[node name="Radius" type="Node2D" parent="." index="3"]
 
 show_behind_parent = true
 position = Vector2( 0, -10 )

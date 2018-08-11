@@ -70,6 +70,7 @@ func set_type(type):
 		attack_cost = units[unit_type].attack_cost
 		damage = units[unit_type].damage
 		update_hp_indicator()
+		update_ap_indicator()
 		# set sprite
 	else:
 		print("ERROR: UNKNOWN UNIT TYPE: " + str(type))
@@ -83,6 +84,10 @@ func reset_ap():
 func update_hp_indicator():
 	$HPIndicator.max_value = units[unit_type].hp
 	$HPIndicator.value     = hp
+	
+func update_ap_indicator():
+	$APIndicator.max_value = units[unit_type].ap
+	$APIndicator.value     = ap
 	
 func damage(damage_hp):
 	hp = hp - damage_hp
@@ -100,6 +105,7 @@ func jump_to(pos):
 	  var cost = map_pos - pos
 	  cost = abs(cost.x) + abs(cost.y)
 	  ap = ap - cost
+	  update_ap_indicator()
 	  set_map_position(pos)
 	
 func select():

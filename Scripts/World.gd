@@ -3,7 +3,8 @@ extends Node2D
 var preScript = preload("res://scripts/softnoise.gd")
 var Player    = preload("res://Components/Player.tscn")
 var softnoise
-var map_size = Vector2(16,16)
+#var map_size = Vector2(16,16)
+var map_size = Vector2(24,24)
 
 onready var camera = $Camera2D
 onready var map    = $TileMap
@@ -165,5 +166,5 @@ func destroy_cell(x, y):
 func end_turn():
 	for player in players["a"]:
 		player.reset_ap()
-	for player in players["a"]:
+	for player in players["b"]:
 		player.reset_ap()
