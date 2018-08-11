@@ -40,4 +40,22 @@
 3/occluder_offset = Vector2( 64, 59 )
 3/navigation_offset = Vector2( 64, 59 )
 3/shapes = [  ]
+4/name = "Tile_04"
+4/texture = ExtResource( 1 )
+4/tex_offset = Vector2( 0, 0 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 512, 0, 128, 118 )
+4/is_autotile = false
+4/occluder_offset = Vector2( 64, 59 )
+4/navigation_offset = Vector2( 64, 59 )
+4/shapes = [  ]
+5/name = "Tile_05"
+5/texture = ExtResource( 1 )
+5/tex_offset = Vector2( 0, 0 )
+5/modulate = Color( 1, 1, 1, 1 )
+5/region = Rect2( 512, 118, 128, 118 )
+5/is_autotile = false
+5/occluder_offset = Vector2( 64, 59 )
+5/navigation_offset = Vector2( 64, 59 )
+5/shapes = [  ]
 

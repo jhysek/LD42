@@ -7,10 +7,10 @@ path="res://.import/player_placeholder_archer.png-579dcc7ef05caa5ce58028804f28cc
 [deps]
 
 source_file="res://Assets/player_placeholder_archer.png"
-source_md5="41773c94f68746bc180b57d5a4e4d65a"
+source_md5="dd60df45cbec137395c0d7a3fcda9989"
 
 dest_files=[ "res://.import/player_placeholder_archer.png-579dcc7ef05caa5ce58028804f28ccae.stex" ]
-dest_md5="474394d9cd7c0d68bdba4270d3083ff6"
+dest_md5="529239ec050bb518a5b559d40d36fe2d"
 
 [params]
 

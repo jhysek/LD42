@@ -7,10 +7,10 @@ path="res://.import/player_placeholder_knight.png-873c67ce67e1b1c03a7d411a6f406e
 [deps]
 
 source_file="res://Assets/player_placeholder_knight.png"
-source_md5="3c0e3bae501768426dd00df46e8bd6c2"
+source_md5="5a7b16947b172c3839be10b5039011ab"
 
 dest_files=[ "res://.import/player_placeholder_knight.png-873c67ce67e1b1c03a7d411a6f406e6d.stex" ]
-dest_md5="0ffd3d84bfef87ec80ab64c589f7453e"
+dest_md5="d2f297eda5611a52c76cfed273d9655c"
 
 [params]
 

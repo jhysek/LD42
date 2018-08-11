@@ -1,6 +1,6 @@
 extends Camera2D
 
-var SPEED = 500
+var SPEED = 800
 
 func _ready():
 	set_process(true)
