@@ -168,6 +168,7 @@ func count_action_radius_from(pos, iterations, positions):
 		var top    = pos + Vector2(0,-1)
 		var bottom = pos + Vector2(0,1)
 	
+	    # TODO: scout can fly over holes
 		positions[pos] = true
 		if map.get_cellv(left) >= 0:
 			action_radius[left]   = true

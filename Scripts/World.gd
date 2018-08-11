@@ -34,6 +34,8 @@ func _ready():
 
 func _input(event):
 	if game_over:
+		if Input.is_action_just_pressed("ui_accept"):
+			reset_game()
 		return
 		
 	var screen        = get_viewport_rect().size
@@ -79,12 +81,12 @@ func game_over_check():
 			
 	if active_enemies <= 0 and active_players > 0:
 		# You win
-		print("YOU WIN")
+		$CanvasLayer/GameOver/Anim.play("Victory")
 		game_over = true
 		
 	if active_enemies > 0 and active_players <= 0:
-		# you lose	
-		print("YOU LOSE")
+		# you lose		
+		$CanvasLayer/GameOver/Anim.play("Defeat")
 		game_over = true
 
 func generate_terain():
@@ -97,11 +99,11 @@ func generate_terain():
 			if v < -0.4:
 				tilemap.set_cell(x, y, -1)
 			elif v < 0:
-				tilemap.set_cell(x, y, 3)
+				tilemap.set_cell(x, y, 2)
 			elif v < 0.5:
 				tilemap.set_cell(x, y, 1)
 			else:
-				tilemap.set_cell(x, y, 0)
+				tilemap.set_cell(x, y, 7)
 
 
 func get_cell_id(x, y):

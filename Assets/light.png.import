@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/tileset.png-06023f60f54ec986b75003a8d422612f.stex"
+path="res://.import/light.png-2a7c25d2528b528b4775521a146eeb11.stex"
 
 [deps]
 
-source_file="res://Assets/tileset.png"
-source_md5="2777e3ff325894876000bd1a028cde53"
+source_file="res://Assets/light.png"
+source_md5="52bef78df4826f8c3858309d439a0242"
 
-dest_files=[ "res://.import/tileset.png-06023f60f54ec986b75003a8d422612f.stex" ]
-dest_md5="6a7d4b516e202fea2b86058c2012d685"
+dest_files=[ "res://.import/light.png-2a7c25d2528b528b4775521a146eeb11.stex" ]
+dest_md5="bc009fab4d9572cfe661c21993eee4ee"
 
 [params]
 

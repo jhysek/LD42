@@ -16,7 +16,7 @@ _sections_unfolded = [ "Offset", "Region" ]
 position = Vector2( 140, 0 )
 texture = ExtResource( 1 )
 region_enabled = true
-region_rect = Rect2( 128, 0, 128, 118 )
+region_rect = Rect2( 128, 118, 128, 118 )
 _sections_unfolded = [ "Offset", "Region" ]
 
 [node name="Tile_02" type="Sprite" parent="." index="2"]
@@ -50,5 +50,24 @@ texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 512, 118, 128, 118 )
 _sections_unfolded = [ "Offset", "Region" ]
+
+[node name="Tile_06" type="Sprite" parent="." index="6"]
+
+position = Vector2( 0, 240 )
+z_index = 1
+z_as_relative = false
+texture = ExtResource( 1 )
+offset = Vector2( 0, -119 )
+region_enabled = true
+region_rect = Rect2( 128, 236, 128, 236 )
+_sections_unfolded = [ "Offset", "Region", "Z Index" ]
+
+[node name="Tile_07" type="Sprite" parent="." index="7"]
+
+position = Vector2( 170, 170 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 236, 128, 118 )
+_sections_unfolded = [ "Animation", "Material", "Offset", "Region" ]
 
 
