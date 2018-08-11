@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Assets/tileset.png" type="Texture" id=1]
+
+[node name="TileSet" type="Node2D" index="0"]
+
+[node name="Tile_00" type="Sprite" parent="." index="0"]
+
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 118 )
+_sections_unfolded = [ "Offset", "Region" ]
+
+[node name="Tile_01" type="Sprite" parent="." index="1"]
+
+position = Vector2( 140, 0 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 128, 0, 128, 118 )
+_sections_unfolded = [ "Offset", "Region" ]
+
+[node name="Tile_02" type="Sprite" parent="." index="2"]
+
+position = Vector2( 280, 0 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 256, 0, 128, 118 )
+_sections_unfolded = [ "Offset", "Region" ]
+
+[node name="Tile_03" type="Sprite" parent="." index="3"]
+
+position = Vector2( 420, 0 )
+texture = ExtResource( 1 )
+region_enabled = true
+region_rect = Rect2( 384, 0, 128, 118 )
+_sections_unfolded = [ "Offset", "Region" ]
+
+
