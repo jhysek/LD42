@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/World.gd" type="Script" id=1]
-[ext_resource path="res://Assets/tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://Scripts/Camera2D.gd" type="Script" id=3]
-[ext_resource path="res://Assets/Exo2-Regular.otf" type="DynamicFontData" id=4]
-[ext_resource path="res://Assets/cursor_flat.png" type="Texture" id=5]
+[ext_resource path="res://Assets/bg.jpg" type="Texture" id=2]
+[ext_resource path="res://Assets/tileset.tres" type="TileSet" id=3]
+[ext_resource path="res://Scripts/Camera2D.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Exo2-Regular.otf" type="DynamicFontData" id=5]
+[ext_resource path="res://Assets/cursor_flat.png" type="Texture" id=6]
 
 [sub_resource type="Animation" id=3]
 
@@ -30,7 +31,7 @@ tracks/0/keys = {
 size = 25
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 4 )
+font_data = ExtResource( 5 )
 _sections_unfolded = [ "Font", "Font/fallback", "Settings" ]
 
 [sub_resource type="DynamicFont" id=2]
@@ -38,7 +39,7 @@ _sections_unfolded = [ "Font", "Font/fallback", "Settings" ]
 size = 18
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 4 )
+font_data = ExtResource( 5 )
 _sections_unfolded = [ "Font", "Settings" ]
 
 [sub_resource type="Environment" id=4]
@@ -114,20 +115,44 @@ glow_blend_mode = 2
 glow_hdr_threshold = 1.0
 glow_hdr_scale = 2.0
 glow_bicubic_upscale = false
-adjustment_enabled = true
+adjustment_enabled = false
 adjustment_brightness = 0.8
 adjustment_contrast = 1.2
 adjustment_saturation = 0.7
 _sections_unfolded = [ "Adjustments", "Background" ]
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 
-[node name="TileMap" type="TileMap" parent="." index="0"]
+[node name="CanvasLayer2" type="CanvasLayer" parent="." index="0"]
+
+layer = -1
+offset = Vector2( 0, 0 )
+rotation = 0.0
+scale = Vector2( 1, 1 )
+transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer2" index="0"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 2 )
+expand = true
+stretch_mode = 7
+
+[node name="TileMap" type="TileMap" parent="." index="1"]
 
 mode = 1
-tile_set = ExtResource( 2 )
+tile_set = ExtResource( 3 )
 cell_size = Vector2( 128, 74 )
 cell_quadrant_size = 16
 cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -145,12 +170,13 @@ format = 1
 tile_data = PoolIntArray(  )
 _sections_unfolded = [ "Cell", "Collision", "Occluder", "Transform" ]
 
-[node name="Overlay" type="TileMap" parent="." index="1"]
+[node name="Overlay" type="TileMap" parent="." index="2"]
 
+editor/display_folded = true
 modulate = Color( 1, 1, 1, 0.756902 )
 position = Vector2( 0, -20 )
 mode = 1
-tile_set = ExtResource( 2 )
+tile_set = ExtResource( 3 )
 cell_size = Vector2( 128, 74 )
 cell_quadrant_size = 16
 cell_custom_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
@@ -179,21 +205,21 @@ anims/bouncing = SubResource( 3 )
 blend_times = [  ]
 _sections_unfolded = [ "Playback Options" ]
 
-[node name="Camera2D" type="Camera2D" parent="." index="2"]
+[node name="Camera2D" type="Camera2D" parent="." index="3"]
 
 position = Vector2( 8, 456 )
 anchor_mode = 1
 rotating = false
 current = true
 zoom = Vector2( 1.6, 1.6 )
-limit_left = -10000000
-limit_top = -10000000
-limit_right = 10000000
-limit_bottom = 10000000
-limit_smoothed = false
+limit_left = -2000
+limit_top = -1000
+limit_right = 2000
+limit_bottom = 2000
+limit_smoothed = true
 drag_margin_h_enabled = false
-drag_margin_v_enabled = true
-smoothing_enabled = true
+drag_margin_v_enabled = false
+smoothing_enabled = false
 smoothing_speed = 10.0
 offset_v = 0.0
 offset_h = 0.0
@@ -204,10 +230,10 @@ drag_margin_bottom = 0.2
 editor_draw_screen = true
 editor_draw_limits = false
 editor_draw_drag_margin = false
-script = ExtResource( 3 )
-_sections_unfolded = [ "Drag Margin", "Editor", "Offset", "Smoothing", "Transform", "Visibility", "Z Index" ]
+script = ExtResource( 4 )
+_sections_unfolded = [ "Drag Margin", "Editor", "Limit", "Offset", "Smoothing", "Transform", "Visibility", "Z Index" ]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." index="3"]
+[node name="CanvasLayer" type="CanvasLayer" parent="." index="4"]
 
 layer = 1
 offset = Vector2( 0, 0 )
@@ -285,6 +311,7 @@ align = 1
 
 [node name="Panel" type="Panel" parent="CanvasLayer" index="3"]
 
+editor/display_folded = true
 anchor_left = 1.0
 anchor_top = 0.0
 anchor_right = 1.0
@@ -395,22 +422,57 @@ text = "End turn"
 flat = false
 align = 1
 
-[node name="Players" type="Node2D" parent="." index="4"]
+[node name="GameOver" type="Control" parent="CanvasLayer" index="4"]
+
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+
+[node name="Label" type="Label" parent="CanvasLayer/GameOver" index="0"]
+
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -20.0
+margin_top = -7.0
+margin_right = 20.0
+margin_bottom = 7.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 2
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 4
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="Players" type="Node2D" parent="." index="5"]
+
+editor/display_folded = true
 
 [node name="TeamA" type="Node2D" parent="Players" index="0"]
 
 [node name="TeamB" type="Node2D" parent="Players" index="1"]
 
-[node name="Cursor" type="Sprite" parent="." index="5"]
+[node name="Cursor" type="Sprite" parent="." index="6"]
 
 modulate = Color( 0.184021, 0.411129, 0.703125, 0.729255 )
 position = Vector2( 0, 64 )
-texture = ExtResource( 5 )
+texture = ExtResource( 6 )
 offset = Vector2( 0, -66 )
 region_rect = Rect2( 444, 640, 111, 128 )
 _sections_unfolded = [ "Offset", "Region", "Visibility" ]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="6"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="7"]
 
 environment = SubResource( 4 )
 

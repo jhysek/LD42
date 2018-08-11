@@ -60,7 +60,7 @@ var attack_radius = {}
 
 
 func init(game, is_ai):
-	map = game.map
+	map  = game.map
 	
 	if is_ai:
 		ai = AI.new()
@@ -155,7 +155,7 @@ func die():
 	status = STATUS_DEAD
 	selected = false
 	hide()
-	print("PLAYER HAS DIED")
+	get_node("/root/Game").game_over_check()
 	
 func alive():
 	return status != STATUS_DEAD

@@ -9,6 +9,7 @@ onready var camera = $Camera2D
 onready var map    = $TileMap
 onready var cursor = $Cursor
 
+var game_over = false
 var current_player = null
 var current_team   = "TeamB"
 var current_turn   = 1
@@ -29,8 +30,12 @@ func _ready():
 	set_process(true)
 	set_process_input(true)
 	generate_players()
+	game_over = false
 
 func _input(event):
+	if game_over:
+		return
+		
 	var screen        = get_viewport_rect().size
 	var camera_offset = Vector2(screen.x / 2, screen.y / 2)
 
@@ -55,12 +60,32 @@ func _input(event):
 			select_player_at(map_pos)
 
 
-func _process(delta):
-	if Input.is_action_just_pressed("ui_accept"):
-		generate_terain()
-		generate_players()
-
-
+func game_over_check():
+	var active_enemies = 0
+	var active_players = 0
+	
+	for enemy in players["a"]:
+		if enemy.alive():
+			active_enemies += 1
+				
+	for player in players["b"]:
+		if player.alive():
+			active_players += 1
+			
+	if active_enemies <= 0 and active_players <= 0:
+		# Draw
+		print("Draw")
+		game_over = true
+			
+	if active_enemies <= 0 and active_players > 0:
+		# You win
+		print("YOU WIN")
+		game_over = true
+		
+	if active_enemies > 0 and active_players <= 0:
+		# you lose	
+		print("YOU LOSE")
+		game_over = true
 
 func generate_terain():
 	randomize()
