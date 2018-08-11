@@ -3,8 +3,7 @@ extends Node2D
 var preScript = preload("res://scripts/softnoise.gd")
 var Player    = preload("res://Components/Player.tscn")
 var softnoise
-#var map_size = Vector2(16,16)
-var map_size = Vector2(20,20)
+var map_size = Vector2(16,16)
 
 onready var camera = $Camera2D
 onready var map    = $TileMap
@@ -45,8 +44,13 @@ func _input(event):
 		var world_pos = get_global_mouse_position()
 		var map_pos = map.world_to_map(world_pos)
 
-		if current_player and current_player.can_move_to(map_pos) and player_placed_at(map_pos) == null:
+		if current_player and current_player.attack_radius.has(map_pos) and enemy_placed_at(map_pos) and current_player.ap >= current_player.attack_cost:
+			current_player.attack(enemy_placed_at(map_pos))
+			update_selected_player_info()
+		 
+		elif current_player and current_player.can_move_to(map_pos) and player_placed_at(map_pos) == null:
 			current_player.jump_to(map_pos)
+			update_selected_player_info()
 		else:
 			select_player_at(map_pos)
 
@@ -65,7 +69,7 @@ func generate_terain():
 	for x in range(map_size.x):
 		for y in range(map_size.y):
 			var v = softnoise.openSimplex2D(x*0.2, y*0.2)
-			if v < -0.5:
+			if v < -0.4:
 				tilemap.set_cell(x, y, -1)
 			elif v < 0:
 				tilemap.set_cell(x, y, 3)
@@ -141,20 +145,22 @@ func get_random_starting_pos(corner):
 		map_pos = map_size - Vector2(x + 1, y + 1)
 	return map_pos
 
-func player_placed_at(map_pos):
-	var res = null
+func enemy_placed_at(map_pos):
+	for enemy in players["a"]:
+		if enemy.map_pos == map_pos and enemy.alive():
+			return enemy
+	return null
 
+func player_placed_at(map_pos):
 	for player in $Players/TeamA.get_children():
-		if player.map_pos == map_pos:
-			res = player
-			break
+		if player.map_pos == map_pos and player.alive():
+			return player
 
 	for player in $Players/TeamB.get_children():
-		if player.map_pos == map_pos:
-			res = player
-			break
+		if player.map_pos == map_pos and player.alive():
+			return player
 
-	return res
+	return null
 
 
 func place_player(player, corner):
@@ -186,7 +192,6 @@ func update_selected_player_info():
 		$CanvasLayer/Panel/HP.text = ""
 		$CanvasLayer/Panel/AP.text = ""
 		
-
 
 func slice_border():
 	$Overlay.clear()	
@@ -227,21 +232,26 @@ func mark_cell(x, y):
 func perform_ai_moves():
 	print("AI MOVES DONE")
 	for enemy in players["a"]:
-		print("--------------------")
 		enemy.make_ai_move()
 		
 	end_turn()
 
 func end_turn():	
 	current_turn = current_turn + 1
-	if current_turn % 3 == 0:
-		slice_border()
+	
+	if current_turn > 2:
+		if current_turn % 2 == 0:
+			slice_border()
 		
-	if (current_turn + 1) % 3 == 0:
-		mark_border()
+		if (current_turn + 1) % 2 == 0:
+			mark_border()
 		
 	for player in players["a"]:
 		player.reset_ap()
 		
 	for player in players["b"]:
 		player.reset_ap()
+		
+
+func reset_game():
+	get_tree().change_scene("res://Scenes/Game.tscn")

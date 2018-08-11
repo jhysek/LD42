@@ -190,4 +190,14 @@ show_behind_parent = true
 position = Vector2( 0, -10 )
 _sections_unfolded = [ "Transform", "Visibility" ]
 
+[node name="Sfx" type="Node" parent="." index="4"]
+
+[node name="Fire" type="AudioStreamPlayer" parent="Sfx" index="0"]
+
+stream = null
+volume_db = 0.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
 

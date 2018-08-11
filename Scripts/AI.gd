@@ -8,8 +8,7 @@ var enemies
 func initialize(controlled_player, current_game):
 	player = controlled_player
 	game = current_game
-	enemies = game.players["b"]
-	
+	enemies = game.players["b"]	
 		
 func calculate_next_move():
 	player.action_radius = {}
@@ -21,25 +20,33 @@ func calculate_next_move():
 	var target_enemy = enemy_in_attack_radius()
 	
 	if target_enemy:
+		print("TRYING to attack..");
 		player.attack(target_enemy)
 	else:
-		# TODO: nacist cestu k njblizsimu nepriteli (nebo ke stredu pole)
-		# zjistit nejblzsi misto, kam muzu jit
-		# skocit tam
-		
-		target_enemy = nearest_enemy()
-		if target_enemy:
-			player.jump
-		else: # jdi ke stredu pole
-			
-	
-func nearest_enemy():
-	var length = 9999
-	for enemy in enemies:
-		var path = game.get_nearest_path(player.map_pos, enemy.map_pos)
+		var path = get_path_to_enemy()
+		print(path)
 		var next_position = get_furthermost_reachable_path_point(path)
 		print("JUMPING ENEMY FROM: " + str(player.map_pos) + " to " + str(next_position)) 
 		player.jump_to(next_position)
+	
+	
+func get_path_to_enemy():
+	var length 	= 9999
+	var result_path   = null
+	
+	for enemy in enemies:
+		if enemy.alive():
+			var path = game.get_nearest_path(player.map_pos, enemy.map_pos)
+			if path.size() < length:
+				length = path.size()
+				result_path = path
+			
+	if result_path == null:
+		print("GETTING PATH TO CENTER")
+		result_path = game.get_nearest_path(player.map_pos, Vector2(floor(game.map_size.x / 2), floor(game.map_size.y / 2)))
+		
+	return result_path
+			
 			
 func enemy_in_attack_radius():
 	for spot in player.attack_radius.keys():
@@ -57,15 +64,25 @@ func get_furthermost_reachable_path_point(path):
 	var result = player.map_pos
 	var max_distance = 0
 
-	print("ENEMY POS: " + str(player.map_pos))
 	for point in path:
-		if player.action_radius.has(Vector2(point.x, point.y)):
+		var vec2_point = Vector2(point.x, point.y)
+		if player.action_radius.has(vec2_point) and tile_unoccupied(vec2_point):
 			var distance = Vector2(point.x, point.y) - player.map_pos
 			distance = abs(distance.x) + abs(distance.y)
-			print("DISTANCE: " + str(distance))
 			if distance > max_distance:
 				distance = max_distance
 				result = Vector2(point.x, point.y)
 				
 	return result
 		
+func tile_unoccupied(pos):
+	var result = true
+	for unit in game.players["a"]:
+		if unit.map_pos.x == pos.x and unit.map_pos.y == pos.y and unit.alive():
+			return false
+			
+	for unit in game.players["b"]:
+		if unit.map_pos.x == pos.x and unit.map_pos.y == pos.y and unit.alive():
+			return false
+			
+	return true

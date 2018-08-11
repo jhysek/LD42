@@ -14,8 +14,8 @@ var units = [
 	# SCOUT
 	{
 		name        = "Scout",
-		ap          = 4,
-		hp          = 10,
+		ap          = 5,
+		hp          = 20,
 		attack_cost = 2,
 		damage      = 2 
 	},
@@ -23,9 +23,9 @@ var units = [
 	# KNIGHT
 	{	
 		name        = "Knight",
-	    ap          = 2,
-		hp          = 20,
-		attack_cost = 2,
+	    ap          = 3,
+		hp          = 40,
+		attack_cost = 3,
 		damage      = 10
 	},
 	
@@ -33,7 +33,7 @@ var units = [
 	{
 		name        = "Archer",
 		ap          = 3,
-		hp          = 8,
+		hp          = 15,
 		attack_cost = 2,
 		damage      = 5
 	}
@@ -81,7 +81,13 @@ func set_type(type):
 		damage = units[unit_type].damage
 		update_hp_indicator()
 		update_ap_indicator()
-		# TODO: set sprite
+		
+		if unit_type == UNIT_ARCHER:
+			$Sprite.texture = load("res://Assets/player_placeholder_archer.png")
+		if unit_type == UNIT_KNIGHT:
+			$Sprite.texture = load("res://Assets/player_placeholder_knight.png")
+		if unit_type == UNIT_SCOUT:
+			$Sprite.texture = load("res://Assets/player_placeholder_scout.png")
 	else:
 		print("ERROR: UNKNOWN UNIT TYPE: " + str(type))
 
@@ -89,9 +95,12 @@ func can_shoot():
 	return unit_type == UNIT_ARCHER
 
 func attack(enemy):
-	if attack_radius.has(enemy.map_pos):
+	if attack_radius.has(enemy.map_pos) and ap >= attack_cost:
 		print("Enemy FIRED")
 		enemy.hit(damage)
+		ap = ap - attack_cost
+		update_ap_indicator()
+		show_radius()
 		
 
 func unit_type_name():
@@ -100,6 +109,7 @@ func unit_type_name():
 func reset_ap():
 	ap = max_ap
 	update_ap_indicator()
+	hide_radius()
 	
 func update_hp_indicator():
 	$HPIndicator.max_value = units[unit_type].hp
@@ -114,7 +124,7 @@ func hit(damage):
 	if hp <= 0:
 		die()
 	else:
-		update_hp_indiator()
+		update_hp_indicator()
 		
 func set_map_position(new_map_pos):
 	map_pos = new_map_pos
@@ -127,6 +137,7 @@ func jump_to(pos):
 	  ap = ap - cost
 	  update_ap_indicator()
 	  set_map_position(pos)
+	  show_radius()
 	
 func select():
 	if status != STATUS_DEAD:
@@ -146,7 +157,9 @@ func die():
 	hide()
 	print("PLAYER HAS DIED")
 	
-
+func alive():
+	return status != STATUS_DEAD
+	
 func count_action_radius_from(pos, iterations, positions):
 	if iterations > 0 and map.get_cell(pos.x, pos.y) >= 0:
 	
