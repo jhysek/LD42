@@ -124,7 +124,11 @@ func can_shoot():
 
 func attack(enemy):
 	if attack_radius.has(enemy.map_pos) and ap >= attack_cost:
-		
+		if can_shoot():
+			$Sfx/Fire.play()
+		else:
+			$Sfx/Melee.play()
+			
 		enemy.hit(damage)
 		ap = ap - attack_cost
 		update_ap_indicator()
@@ -149,11 +153,15 @@ func update_ap_indicator():
 	
 func hit(damage):
 	$AnimationPlayer.play("Hit")
-	$Sfx/Hit.play()
+
 	hp = hp - damage
 	if hp <= 0:
+		var idx = randi() % 4 + 1
+		get_node("Sfx/Death" + str(idx)).play()
 		die()
 	else:
+		var idx = randi() % 3 + 1
+		get_node("Sfx/Hit" + str(idx)).play()
 		update_hp_indicator()
 		
 func set_map_position(new_map_pos):
@@ -172,6 +180,8 @@ func jump_to(pos):
 	  hide_radius()
 	  moving = true
 	  map_pos = pos
+	  var idx = randi() % 4 + 1
+	  get_node("Sfx/Ok" + str(idx)).play()
 
 	
 func select():
@@ -179,6 +189,8 @@ func select():
 		$AnimationPlayer.play("Active")
 		selected = true
 		show_radius()
+		var idx = randi() % 4 + 1
+		get_node("Sfx/Roger" + str(idx)).play()
 		return true
 	else:
 		return false

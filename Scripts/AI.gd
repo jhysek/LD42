@@ -22,13 +22,11 @@ func calculate_next_move():
 	var target_enemy = enemy_in_attack_radius()
 	
 	if target_enemy:
-		print("TRYING to attack..");
 		player.attack(target_enemy)
 	else:
 		var path = get_path_to_enemy()
 		print(path)
 		var next_position = get_furthermost_reachable_path_point(path)
-		print("JUMPING ENEMY FROM: " + str(player.map_pos) + " to " + str(next_position)) 
 		player.jump_to(next_position)
 	
 	
@@ -44,7 +42,6 @@ func get_path_to_enemy():
 				result_path = path
 			
 	if result_path == null:
-		print("GETTING PATH TO CENTER")
 		result_path = game.get_nearest_path(player.map_pos, Vector2(floor(game.map_size.x / 2), floor(game.map_size.y / 2)))
 		
 	return result_path

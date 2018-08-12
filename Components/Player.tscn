@@ -1,10 +1,25 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://Assets/unit_blue_front.png" type="Texture" id=2]
 [ext_resource path="res://Assets/sword.png" type="Texture" id=3]
 [ext_resource path="res://Assets/bow.png" type="Texture" id=4]
-[ext_resource path="res://Assets/indicator.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Audio/fire.ogg" type="AudioStream" id=5]
+[ext_resource path="res://Assets/Audio/melee.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Assets/Audio/hit01.ogg" type="AudioStream" id=7]
+[ext_resource path="res://Assets/Audio/hit02.ogg" type="AudioStream" id=8]
+[ext_resource path="res://Assets/Audio/hit03.ogg" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Audio/roger1.ogg" type="AudioStream" id=10]
+[ext_resource path="res://Assets/Audio/roger2.ogg" type="AudioStream" id=11]
+[ext_resource path="res://Assets/Audio/ok4.ogg" type="AudioStream" id=12]
+[ext_resource path="res://Assets/Audio/ok2.ogg" type="AudioStream" id=13]
+[ext_resource path="res://Assets/Audio/death01.ogg" type="AudioStream" id=14]
+[ext_resource path="res://Assets/Audio/death02.ogg" type="AudioStream" id=15]
+[ext_resource path="res://Assets/Audio/death03.ogg" type="AudioStream" id=16]
+[ext_resource path="res://Assets/Audio/death04.ogg" type="AudioStream" id=17]
+[ext_resource path="res://Assets/Audio/ok1.ogg" type="AudioStream" id=18]
+[ext_resource path="res://Assets/Audio/ok3.ogg" type="AudioStream" id=19]
+[ext_resource path="res://Assets/indicator.png" type="Texture" id=20]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
@@ -346,16 +361,136 @@ _sections_unfolded = [ "Transform", "Visibility" ]
 
 [node name="Fire" type="AudioStreamPlayer" parent="Sfx" index="0"]
 
-stream = null
+stream = ExtResource( 5 )
 volume_db = 0.0
 autoplay = false
 mix_target = 0
 bus = "Master"
 
-[node name="Hit" type="AudioStreamPlayer" parent="Sfx" index="1"]
+[node name="Melee" type="AudioStreamPlayer" parent="Sfx" index="1"]
 
-stream = null
+stream = ExtResource( 6 )
 volume_db = 0.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Hit1" type="AudioStreamPlayer" parent="Sfx" index="2"]
+
+stream = ExtResource( 7 )
+volume_db = -10.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Hit2" type="AudioStreamPlayer" parent="Sfx" index="3"]
+
+stream = ExtResource( 8 )
+volume_db = 0.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Hit3" type="AudioStreamPlayer" parent="Sfx" index="4"]
+
+stream = ExtResource( 9 )
+volume_db = 0.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Roger1" type="AudioStreamPlayer" parent="Sfx" index="5"]
+
+stream = ExtResource( 10 )
+volume_db = -10.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Roger2" type="AudioStreamPlayer" parent="Sfx" index="6"]
+
+stream = ExtResource( 11 )
+volume_db = -10.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Roger3" type="AudioStreamPlayer" parent="Sfx" index="7"]
+
+stream = ExtResource( 12 )
+volume_db = -10.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Roger4" type="AudioStreamPlayer" parent="Sfx" index="8"]
+
+stream = ExtResource( 13 )
+volume_db = -10.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Death1" type="AudioStreamPlayer" parent="Sfx" index="9"]
+
+stream = ExtResource( 14 )
+volume_db = -10.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Death2" type="AudioStreamPlayer" parent="Sfx" index="10"]
+
+stream = ExtResource( 15 )
+volume_db = -10.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Death3" type="AudioStreamPlayer" parent="Sfx" index="11"]
+
+stream = ExtResource( 16 )
+volume_db = -10.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Death4" type="AudioStreamPlayer" parent="Sfx" index="12"]
+
+stream = ExtResource( 17 )
+volume_db = -10.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Ok1" type="AudioStreamPlayer" parent="Sfx" index="13"]
+
+stream = ExtResource( 18 )
+volume_db = -10.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Ok2" type="AudioStreamPlayer" parent="Sfx" index="14"]
+
+stream = ExtResource( 13 )
+volume_db = -10.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Ok3" type="AudioStreamPlayer" parent="Sfx" index="15"]
+
+stream = ExtResource( 19 )
+volume_db = -10.0
+autoplay = false
+mix_target = 0
+bus = "Master"
+
+[node name="Ok4" type="AudioStreamPlayer" parent="Sfx" index="16"]
+
+stream = ExtResource( 12 )
+volume_db = -10.0
 autoplay = false
 mix_target = 0
 bus = "Master"
@@ -374,7 +509,7 @@ autostart = false
 self_modulate = Color( 0.419599, 0.789063, 0.0832214, 1 )
 position = Vector2( 0, -110 )
 scale = Vector2( 0.3, 0.3 )
-texture = ExtResource( 5 )
+texture = ExtResource( 20 )
 _sections_unfolded = [ "Material", "Transform", "Visibility", "Z Index" ]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="8"]

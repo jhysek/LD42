@@ -69,7 +69,7 @@ func _input(event):
 		cursor.set_offset(map.map_to_world(map_pos))
 		$CanvasLayer/Label.text = str(map_pos)
 
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and event.is_pressed():
 		var world_pos = get_global_mouse_position()
 		var map_pos = map.world_to_map(world_pos)
 
@@ -78,6 +78,7 @@ func _input(event):
 			update_selected_player_info()
 		 
 		elif current_player and current_player.can_move_to(map_pos) and player_placed_at(map_pos) == null:
+			$Click.play()
 			current_player.jump_to(map_pos)
 			update_selected_player_info()
 		else:
@@ -283,6 +284,7 @@ func select_player_at(map_pos):
 			current_player = null
 			update_selected_player_info()
 		elif player.select():
+			$Click.play()
 			$CanvasLayer/Panel.show()
 			current_player = player
 			update_selected_player_info()
@@ -334,18 +336,20 @@ func mark_cell(x, y):
 	  overlay.set_cell(x, y, 5)
 	
 
-func perform_ai_moves(): 
+func perform_ai_moves():
+	$Click.play()
 	var time = 0.5
 	ai_turn = true
 	$CanvasLayer/Panel.hide()
 	
 	for enemy in players["a"]:
-		var timer = enemy.get_node("AITimer")
-		timer.wait_time = time
-		timer.start()
-		time += 1.2
+		if enemy.alive():
+			var timer = enemy.get_node("AITimer")
+			timer.wait_time = time
+			timer.start()
+			time += 1.2
 		
-	$TurnTimer.wait_time = 4
+	$TurnTimer.wait_time = time + 0.5
 	$TurnTimer.start()
 
 func next_turn():	
@@ -356,9 +360,12 @@ func next_turn():
 	
 	if current_turn > 2:
 		if current_turn % 2 == 0:
+			$Alarm.stop()
+			$Explosion.play()
 			slice_border()
 		
 		if (current_turn + 1) % 2 == 0:
+			$Alarm.play()
 			mark_border()
 		
 	for player in players["a"]:

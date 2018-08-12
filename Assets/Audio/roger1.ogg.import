@@ -1,0 +1,18 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/roger1.ogg-0b0da0beb9a1c31c66eef2620b5e5889.oggstr"
+
+[deps]
+
+source_file="res://Assets/Audio/roger1.ogg"
+source_md5="18d9504af19a7fd194087c9808939583"
+
+dest_files=[ "res://.import/roger1.ogg-0b0da0beb9a1c31c66eef2620b5e5889.oggstr" ]
+dest_md5="1f60e13150f627f61bf175b6a1a7b34c"
+
+[params]
+
+loop=false
+loop_offset=0

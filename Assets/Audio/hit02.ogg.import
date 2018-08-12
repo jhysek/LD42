@@ -1,0 +1,18 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/hit02.ogg-c555d737855a32dc921a8ad39892cace.oggstr"
+
+[deps]
+
+source_file="res://Assets/Audio/hit02.ogg"
+source_md5="4dd1bb61cddc80fa0314cbd369c6e3de"
+
+dest_files=[ "res://.import/hit02.ogg-c555d737855a32dc921a8ad39892cace.oggstr" ]
+dest_md5="c1668ae19fd1ec5f8f3e258424a58143"
+
+[params]
+
+loop=false
+loop_offset=0
