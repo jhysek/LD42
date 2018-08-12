@@ -84,9 +84,9 @@ func init(game, is_ai):
 		ai = AI.new()
 		ai.initialize(self, game)
 		
-		$Sprite.modulate = Color(1,0,0)
+		$Visual/Sprite.modulate = Color(1,0,0)
 	else:
-		$Sprite.modulate = Color(0,0,1)
+		$Visual/Sprite.modulate = Color(0,0,1)
 
 func set_type(type):
 	if type == UNIT_SCOUT || type == UNIT_ARCHER || type == UNIT_KNIGHT:
@@ -102,11 +102,11 @@ func set_type(type):
 		update_ap_indicator()
 		
 		if unit_type == UNIT_ARCHER:
-			$Sprite.texture = load("res://Assets/player_placeholder_archer.png")
+			$Visual/Sprite.texture = load("res://Assets/player_placeholder_archer.png")
 		if unit_type == UNIT_KNIGHT:
-			$Sprite.texture = load("res://Assets/player_placeholder_knight.png")
+			$Visual/Sprite.texture = load("res://Assets/player_placeholder_knight.png")
 		if unit_type == UNIT_SCOUT:
-			$Sprite.texture = load("res://Assets/player_placeholder_scout.png")
+			$Visual/Sprite.texture = load("res://Assets/player_placeholder_scout.png")
 	else:
 		print("ERROR: UNKNOWN UNIT TYPE: " + str(type))
 
@@ -115,11 +115,11 @@ func can_shoot():
 
 func attack(enemy):
 	if attack_radius.has(enemy.map_pos) and ap >= attack_cost:
-		print("Enemy FIRED")
+		
 		enemy.hit(damage)
 		ap = ap - attack_cost
 		update_ap_indicator()
-		show_radius()
+		hide_radius()
 		
 
 func unit_type_name():
@@ -131,14 +131,16 @@ func reset_ap():
 	hide_radius()
 	
 func update_hp_indicator():
-	$HPIndicator.max_value = units[unit_type].hp
-	$HPIndicator.value     = hp
+	$Visual/HPIndicator.max_value = units[unit_type].hp
+	$Visual/HPIndicator.value     = hp
 	
 func update_ap_indicator():
-	$APIndicator.max_value = units[unit_type].ap
-	$APIndicator.value     = ap
+	$Visual/APIndicator.max_value = units[unit_type].ap
+	$Visual/APIndicator.value     = ap
 	
 func hit(damage):
+	$AnimationPlayer.play("Hit")
+	$Sfx/Hit.play()
 	hp = hp - damage
 	if hp <= 0:
 		die()
@@ -164,6 +166,7 @@ func jump_to(pos):
 	
 func select():
 	if status != STATUS_DEAD:
+		$AnimationPlayer.play("Active")
 		selected = true
 		show_radius()
 		return true
@@ -171,6 +174,7 @@ func select():
 		return false
 		
 func unselect():
+	$AnimationPlayer.play("Idle")
 	selected = false
 	hide_radius()
 	
@@ -272,5 +276,13 @@ func is_in_position(x,y):
 	
 func make_ai_move():
 	if ai and status == STATUS_ALIVE:
-		ai.calculate_next_move()
+		$AnimationPlayer.play("Active")
+		#ai.calculate_next_move()
+		$ActionTimer.wait_time = 0.5
+		$ActionTimer.start()
+		
+func ai_calculate_next_move():
+	print("ACTION TIMER EXPIRED...")
+	ai.calculate_next_move()
+	$AnimationPlayer.play("Idle")
 		

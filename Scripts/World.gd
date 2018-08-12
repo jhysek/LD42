@@ -18,6 +18,7 @@ var current_team   = "TeamB"
 var current_turn   = 1
 var sliced_border_width = 0
 var traversing_graph 
+var ai_turn = false
 
 var cell_markers = []
 
@@ -38,6 +39,9 @@ func _ready():
 	$Camera2D/AnimationPlayer.play("Start")
 
 func _input(event):
+	if ai_turn:
+		return
+		
 	if game_over:
 		if Input.is_action_just_pressed("ui_accept"):
 			reset_game()
@@ -68,6 +72,9 @@ func _input(event):
 
 
 func game_over_check():
+	if game_over:
+		return
+		
 	var active_enemies = 0
 	var active_players = 0
 	
@@ -305,14 +312,22 @@ func mark_cell(x, y):
 	  overlay.set_cell(x, y, 5)
 	
 
-func perform_ai_moves():
-	print("AI MOVES DONE")
+func perform_ai_moves(): 
+	var time = 0.5
+	ai_turn = true
+	
 	for enemy in players["a"]:
-		enemy.make_ai_move()
+		var timer = enemy.get_node("AITimer")
+		timer.wait_time = time
+		timer.start()
+		time += 1.2
 		
-	end_turn()
+	$TurnTimer.wait_time = 4
+	$TurnTimer.start()
 
-func end_turn():	
+func next_turn():	
+	print("YOUR TURN")
+	ai_turn = false
 	current_turn = current_turn + 1
 	
 	if current_turn > 2:

@@ -886,8 +886,17 @@ playback_speed = 1.0
 anims/FloatTerrain = SubResource( 11 )
 blend_times = [  ]
 
+[node name="TurnTimer" type="Timer" parent="." index="6"]
+
+process_mode = 1
+wait_time = 4.0
+one_shot = true
+autostart = false
+
 [connection signal="pressed" from="CanvasLayer/Button2" to="." method="reset_game"]
 
 [connection signal="pressed" from="CanvasLayer/Panel/Button" to="." method="perform_ai_moves"]
+
+[connection signal="timeout" from="TurnTimer" to="." method="next_turn"]
 
 
