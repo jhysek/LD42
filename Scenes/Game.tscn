@@ -486,7 +486,7 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -7 ) ]
 }
 
-[node name="Game" type="Node2D" index="0"]
+[node name="Game" type="Node2D"]
 
 script = ExtResource( 1 )
 
@@ -661,7 +661,6 @@ _sections_unfolded = [ "Range", "Shadow", "Transform" ]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." index="3"]
 
-editor/display_folded = true
 layer = 2
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -702,12 +701,13 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = SubResource( 4 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Victory!"
 align = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Visibility", "custom_fonts" ]
+_sections_unfolded = [ "Visibility", "custom_colors", "custom_fonts" ]
 
 [node name="Defeat" type="Label" parent="CanvasLayer/GameOver" index="1"]
 
@@ -727,12 +727,13 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = SubResource( 4 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "You have been defeated by an inferior AI."
 align = 1
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Visibility", "custom_fonts" ]
+_sections_unfolded = [ "Visibility", "custom_colors", "custom_fonts" ]
 
 [node name="Again" type="Label" parent="CanvasLayer/GameOver" index="2"]
 
@@ -748,9 +749,11 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+_sections_unfolded = [ "custom_colors", "custom_fonts" ]
 
 [node name="Anim" type="AnimationPlayer" parent="CanvasLayer/GameOver" index="3"]
 
@@ -780,11 +783,12 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = SubResource( 7 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Now prove it's not a coincidence!"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Visibility", "custom_fonts" ]
+_sections_unfolded = [ "Visibility", "custom_colors", "custom_fonts" ]
 
 [node name="Need to do better" type="Label" parent="CanvasLayer/GameOver" index="5"]
 
@@ -804,14 +808,16 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = SubResource( 7 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "Shame on you! Go back and win this battle."
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
-_sections_unfolded = [ "Visibility", "custom_fonts" ]
+_sections_unfolded = [ "Visibility", "custom_colors", "custom_fonts" ]
 
 [node name="Label" type="Label" parent="CanvasLayer" index="1"]
 
+visible = false
 anchor_left = 0.5
 anchor_top = 0.0
 anchor_right = 0.5
@@ -1161,7 +1167,7 @@ bus = "Master"
 
 [connection signal="pressed" from="CanvasLayer/Menu/Resume" to="." method="_on_Resume_pressed"]
 
-[connection signal="pressed" from="CanvasLayer/Menu/Restart" to="." method="restart_game"]
+[connection signal="pressed" from="CanvasLayer/Menu/Restart" to="." method="reset_game"]
 
 [connection signal="pressed" from="CanvasLayer/Menu/Menu" to="." method="_on_Menu_pressed"]
 

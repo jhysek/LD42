@@ -41,6 +41,7 @@ func _ready():
 
 func _input(event):
 	if event is InputEventKey and Input.is_action_just_pressed('ui_cancel'):
+		$Click.play()
 		if not paused:
 			paused = true
 			$CanvasLayer/Menu.show()
@@ -353,7 +354,6 @@ func perform_ai_moves():
 	$TurnTimer.start()
 
 func next_turn():	
-	print("YOUR TURN")
 	ai_turn = false
 	$CanvasLayer/Panel.show()
 	current_turn = current_turn + 1
@@ -376,12 +376,15 @@ func next_turn():
 		
 
 func reset_game():
+	$Click.play()
 	get_tree().change_scene("res://Scenes/Game.tscn")
 
 
 func _on_Menu_pressed():
+	$Click.play()
 	get_tree().change_scene("res://Scenes/Menu.tscn")
 
 func _on_Resume_pressed():
+	$Click.play()
 	$CanvasLayer/Menu.hide()
 	paused = false

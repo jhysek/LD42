@@ -28,6 +28,7 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 1
 script = ExtResource( 1 )
+newline = true
 
 [node name="Title" type="Label" parent="." index="0"]
 

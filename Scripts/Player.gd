@@ -65,6 +65,9 @@ var attack_radius = {}
 var target_position = Vector2()
 var moving          = false
 
+var front_tex
+var back_tex
+
 
 func _ready():
 	set_process(true)
@@ -100,9 +103,14 @@ func set_type(type):
 		update_ap_indicator()
 		
 		if ai:
-			$Visual/Sprite.texture = load("res://Assets/unit_red_front.png")	
+			front_tex = load("res://Assets/unit_red_front.png")
+			back_tex = load("res://Assets/unit_red_back.png")
+			
+			$Visual/Sprite.texture = front_tex	
 		else:
-			$Visual/Sprite.texture = load("res://Assets/unit_blue_back.png")
+			front_tex = load("res://Assets/unit_blue_front.png")
+			back_tex = load("res://Assets/unit_blue_back.png")
+			$Visual/Sprite.texture = back_tex
 			
 		if unit_type == UNIT_ARCHER:
 			$Visual/Sprite/Bow.show()
@@ -124,9 +132,18 @@ func can_shoot():
 
 func attack(enemy):
 	if attack_radius.has(enemy.map_pos) and ap >= attack_cost:
+		if enemy.map_pos.y < map_pos.y:
+			$Visual/Sprite.texture = back_tex
+			# back
+		if enemy.map_pos.y > map_pos.y:
+			$Visual/Sprite.texture = front_tex
+			# front
+		
 		if can_shoot():
+			$AnimationPlayer.play("Fire")
 			$Sfx/Fire.play()
 		else:
+			$AnimationPlayer.play("Melee")
 			$Sfx/Melee.play()
 			
 		enemy.hit(damage)
@@ -178,10 +195,15 @@ func jump_to(pos):
 	  # set_map_position(pos)
 	  target_position = map.map_to_world(pos)
 	  hide_radius()
+	  if pos.y < map_pos.y:
+	    $Visual/Sprite.texture = back_tex
+	  if pos.y > map_pos.y:
+	    $Visual/Sprite.texture = front_tex
 	  moving = true
 	  map_pos = pos
-	  var idx = randi() % 4 + 1
-	  get_node("Sfx/Ok" + str(idx)).play()
+	  if not ai:
+	    var idx = randi() % 4 + 1
+	    get_node("Sfx/Ok" + str(idx)).play()
 
 	
 func select():
@@ -304,7 +326,6 @@ func make_ai_move():
 		$ActionTimer.start()
 		
 func ai_calculate_next_move():
-	print("ACTION TIMER EXPIRED...")
 	ai.calculate_next_move()
 	$AnimationPlayer.play("Idle")
 		

@@ -1,16 +1,45 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scripts/Menu.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Exo2-Regular.otf" type="DynamicFontData" id=2]
-[ext_resource path="res://Components/StatBox.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Assets/Audio/click.ogg" type="AudioStream" id=4]
+[ext_resource path="res://Assets/menu_bg.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Exo2-Regular.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://Components/StatBox.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Audio/click.ogg" type="AudioStream" id=5]
+
+[sub_resource type="StyleBoxFlat" id=4]
+
+content_margin_left = -1.0
+content_margin_right = -1.0
+content_margin_top = -1.0
+content_margin_bottom = -1.0
+bg_color = Color( 0, 0, 0, 0.850824 )
+draw_center = true
+border_width_left = 0
+border_width_top = 0
+border_width_right = 0
+border_width_bottom = 0
+border_color = Color( 0.8, 0.8, 0.8, 1 )
+border_blend = false
+corner_radius_top_left = 0
+corner_radius_top_right = 0
+corner_radius_bottom_right = 0
+corner_radius_bottom_left = 0
+corner_detail = 8
+expand_margin_left = 0.0
+expand_margin_right = 0.0
+expand_margin_top = 0.0
+expand_margin_bottom = 0.0
+shadow_color = Color( 0, 0, 0, 0.6 )
+shadow_size = 0
+anti_aliasing = true
+anti_aliasing_size = 1
 
 [sub_resource type="DynamicFont" id=1]
 
 size = 50
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 2 )
+font_data = ExtResource( 3 )
 _sections_unfolded = [ "Font", "Settings" ]
 
 [sub_resource type="DynamicFont" id=2]
@@ -18,7 +47,7 @@ _sections_unfolded = [ "Font", "Settings" ]
 size = 30
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 2 )
+font_data = ExtResource( 3 )
 _sections_unfolded = [ "Font", "Settings" ]
 
 [sub_resource type="DynamicFont" id=3]
@@ -26,10 +55,10 @@ _sections_unfolded = [ "Font", "Settings" ]
 size = 15
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 2 )
+font_data = ExtResource( 3 )
 _sections_unfolded = [ "Font", "Settings" ]
 
-[node name="Menu" type="Node2D"]
+[node name="Menu" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
 
@@ -41,7 +70,43 @@ rotation = 0.0
 scale = Vector2( 1, 1 )
 transform = Transform2D( 1, 0, 0, 1, 0, 0 )
 
-[node name="Title" type="Label" parent="CanvasLayer" index="0"]
+[node name="TextureRect2" type="TextureRect" parent="CanvasLayer" index="0"]
+
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -1320.0
+margin_top = -985.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 1
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+texture = ExtResource( 2 )
+stretch_mode = 3
+
+[node name="Panel" type="Panel" parent="CanvasLayer" index="1"]
+
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -504.0
+margin_top = -70.0
+margin_right = 6.0
+margin_bottom = -30.0
+rect_pivot_offset = Vector2( 0, 0 )
+rect_clip_content = false
+mouse_filter = 0
+mouse_default_cursor_shape = 0
+size_flags_horizontal = 1
+size_flags_vertical = 1
+custom_styles/panel = SubResource( 4 )
+_sections_unfolded = [ "custom_styles" ]
+
+[node name="Title" type="Label" parent="CanvasLayer" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -58,14 +123,14 @@ mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
 custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0.707031, 0, 0, 1 )
-text = "Battle Tactics"
+custom_colors/font_color = Color( 0.58551, 0.707031, 0, 1 )
+text = "Cartoon Tactics"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "Theme", "custom_colors", "custom_fonts" ]
 
-[node name="Start Game" type="Button" parent="CanvasLayer" index="1"]
+[node name="Start Game" type="Button" parent="CanvasLayer" index="3"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -84,7 +149,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.511719, 0.511719, 0.511719, 1 )
-custom_colors/font_color_hover = Color( 0.542969, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0.584314, 0.705882, 0, 1 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -94,7 +159,7 @@ flat = true
 align = 0
 _sections_unfolded = [ "custom_colors", "custom_fonts" ]
 
-[node name="Quit" type="Button" parent="CanvasLayer" index="2"]
+[node name="Quit" type="Button" parent="CanvasLayer" index="4"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -113,7 +178,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0.472656, 0.472656, 0.472656, 1 )
-custom_colors/font_color_hover = Color( 0.589844, 0, 0, 1 )
+custom_colors/font_color_hover = Color( 0.584314, 0.705882, 0, 1 )
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
@@ -123,7 +188,7 @@ flat = true
 align = 0
 _sections_unfolded = [ "custom_colors", "custom_fonts" ]
 
-[node name="Label" type="Label" parent="CanvasLayer" index="3"]
+[node name="Label" type="Label" parent="CanvasLayer" index="5"]
 
 anchor_left = 1.0
 anchor_top = 1.0
@@ -147,7 +212,7 @@ lines_skipped = 0
 max_lines_visible = -1
 _sections_unfolded = [ "custom_fonts" ]
 
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer" index="4"]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer" index="6"]
 
 anchor_left = 1.0
 anchor_top = 1.0
@@ -165,7 +230,7 @@ size_flags_horizontal = 1
 size_flags_vertical = 1
 stretch_mode = 0
 
-[node name="Stats" parent="CanvasLayer" index="5" instance=ExtResource( 3 )]
+[node name="Stats" parent="CanvasLayer" index="7" instance=ExtResource( 4 )]
 
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -173,10 +238,11 @@ margin_left = 90.0
 margin_top = -190.0
 margin_right = 130.0
 margin_bottom = -150.0
+newline = false
 
 [node name="Click" type="AudioStreamPlayer" parent="." index="1"]
 
-stream = ExtResource( 4 )
+stream = ExtResource( 5 )
 volume_db = -20.0
 autoplay = false
 mix_target = 0
