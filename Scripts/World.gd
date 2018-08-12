@@ -1,6 +1,6 @@
 extends Node2D
 
-var preScript = preload("res://scripts/softnoise.gd")
+var preScript = preload("res://Scripts/softnoise.gd")
 var Player    = preload("res://Components/Player.tscn")
 var softnoise
 var map_size = Vector2(16,16)
@@ -19,6 +19,7 @@ var current_turn   = 1
 var sliced_border_width = 0
 var traversing_graph 
 var ai_turn = false
+var paused = false
 
 var cell_markers = []
 
@@ -39,7 +40,17 @@ func _ready():
 	$Camera2D/AnimationPlayer.play("Start")
 
 func _input(event):
-	if ai_turn:
+	if event is InputEventKey and Input.is_action_just_pressed('ui_cancel'):
+		if not paused:
+			paused = true
+			$CanvasLayer/Menu.show()
+			$CanvasLayer/StatPanel.show()
+		else:
+			paused = false
+			$CanvasLayer/Menu.hide()
+			$CanvasLayer/StatPanel.hide()
+			
+	if ai_turn or paused:
 		return
 		
 	if game_over:
@@ -49,6 +60,8 @@ func _input(event):
 		
 	var screen        = get_viewport_rect().size
 	var camera_offset = Vector2(screen.x / 2, screen.y / 2)
+	
+
 
 	if event is InputEventMouseMotion:
 		var world_pos = get_global_mouse_position()
@@ -89,18 +102,26 @@ func game_over_check():
 	if active_enemies <= 0 and active_players <= 0:
 		# Draw
 		print("Draw")
+		Stats.save_draw()
 		game_over = true
+		$CanvasLayer/StatPanel/Stats.load_stats()
+		$CanvasLayer/StatPanel.show()
 			
 	if active_enemies <= 0 and active_players > 0:
-		# You win
+		Stats.save_win()
 		$CanvasLayer/GameOver/Anim.play("Victory")
 		game_over = true
-		
+		$CanvasLayer/StatPanel/Stats.load_stats()
+		$CanvasLayer/StatPanel.show()
+				
 	if active_enemies > 0 and active_players <= 0:
+		Stats.save_defeat()
 		# you lose		
 		$CanvasLayer/GameOver/Anim.play("Defeat")
 		game_over = true
-
+		$CanvasLayer/StatPanel/Stats.load_stats()
+		$CanvasLayer/StatPanel.show()
+		
 func generate_terain():
 	randomize()
 	var tilemap = $TileMap
@@ -196,8 +217,8 @@ func generate_players():
 
 	for i in range(3):
 		var new_player = Player.instance()
-		new_player.set_type(i)
 		new_player.init(self, true)
+		new_player.set_type(i)
 		new_player.add_to_group("Opponent")
 		players["a"].append(new_player)
 		players_a.add_child(new_player)
@@ -205,8 +226,8 @@ func generate_players():
 
 	for i in range(3):
 		var new_player = Player.instance()
-		new_player.set_type(i)
 		new_player.init(self, false)
+		new_player.set_type(i)
 		new_player.add_to_group("Player")
 		players["b"].append(new_player)
 		players_b.add_child(new_player)
@@ -262,6 +283,7 @@ func select_player_at(map_pos):
 			current_player = null
 			update_selected_player_info()
 		elif player.select():
+			$CanvasLayer/Panel.show()
 			current_player = player
 			update_selected_player_info()
 			
@@ -315,6 +337,7 @@ func mark_cell(x, y):
 func perform_ai_moves(): 
 	var time = 0.5
 	ai_turn = true
+	$CanvasLayer/Panel.hide()
 	
 	for enemy in players["a"]:
 		var timer = enemy.get_node("AITimer")
@@ -328,6 +351,7 @@ func perform_ai_moves():
 func next_turn():	
 	print("YOUR TURN")
 	ai_turn = false
+	$CanvasLayer/Panel.show()
 	current_turn = current_turn + 1
 	
 	if current_turn > 2:
@@ -346,3 +370,11 @@ func next_turn():
 
 func reset_game():
 	get_tree().change_scene("res://Scenes/Game.tscn")
+
+
+func _on_Menu_pressed():
+	get_tree().change_scene("res://Scenes/Menu.tscn")
+
+func _on_Resume_pressed():
+	$CanvasLayer/Menu.hide()
+	paused = false

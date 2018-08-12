@@ -15,7 +15,9 @@ func calculate_next_move():
 	player.count_action_radius_from(player.map_pos, player.ap, {})
 	
 	player.attack_radius = {}
-	player.count_attack_radius_from(player.map_pos, player.ap, {})
+	player.count_attack_radius_from(player.map_pos, player.ap if player.can_shoot() else 1, {})
+	
+	# TODO: priorita - pokud je na hranici likvidace, jit pryc!
 	
 	var target_enemy = enemy_in_attack_radius()
 	

@@ -74,6 +74,7 @@ func _process(delta):
 		if position != target_position:
 			position.x = lerp(position.x, target_position.x, delta * speed)
 			position.y = lerp(position.y, target_position.y, delta * speed)
+			z_index = position.y
 		else:
 			moving = false
 			
@@ -84,9 +85,6 @@ func init(game, is_ai):
 		ai = AI.new()
 		ai.initialize(self, game)
 		
-		$Visual/Sprite.modulate = Color(1,0,0)
-	else:
-		$Visual/Sprite.modulate = Color(0,0,1)
 
 func set_type(type):
 	if type == UNIT_SCOUT || type == UNIT_ARCHER || type == UNIT_KNIGHT:
@@ -101,12 +99,23 @@ func set_type(type):
 		update_hp_indicator()
 		update_ap_indicator()
 		
+		if ai:
+			$Visual/Sprite.texture = load("res://Assets/unit_red_front.png")	
+		else:
+			$Visual/Sprite.texture = load("res://Assets/unit_blue_back.png")
+			
 		if unit_type == UNIT_ARCHER:
-			$Visual/Sprite.texture = load("res://Assets/player_placeholder_archer.png")
+			$Visual/Sprite/Bow.show()
+			$Visual/Sprite/Sword.hide()
+			
 		if unit_type == UNIT_KNIGHT:
-			$Visual/Sprite.texture = load("res://Assets/player_placeholder_knight.png")
+			$Visual/Sprite/Bow.hide()
+			$Visual/Sprite/Sword.show()
+			
 		if unit_type == UNIT_SCOUT:
-			$Visual/Sprite.texture = load("res://Assets/player_placeholder_scout.png")
+			$Visual/Sprite/Bow.hide()
+			$Visual/Sprite/Sword.hide()
+		
 	else:
 		print("ERROR: UNKNOWN UNIT TYPE: " + str(type))
 
@@ -131,12 +140,12 @@ func reset_ap():
 	hide_radius()
 	
 func update_hp_indicator():
-	$Visual/HPIndicator.max_value = units[unit_type].hp
-	$Visual/HPIndicator.value     = hp
+	$HPIndicator.max_value = units[unit_type].hp
+	$HPIndicator.value     = hp
 	
 func update_ap_indicator():
-	$Visual/APIndicator.max_value = units[unit_type].ap
-	$Visual/APIndicator.value     = ap
+	$APIndicator.max_value = units[unit_type].ap
+	$APIndicator.value     = ap
 	
 func hit(damage):
 	$AnimationPlayer.play("Hit")
@@ -149,6 +158,7 @@ func hit(damage):
 		
 func set_map_position(new_map_pos):
 	map_pos = new_map_pos
+	z_index = map_pos.y
 	position = map.map_to_world(map_pos)
 	
 func jump_to(pos):
