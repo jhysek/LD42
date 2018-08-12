@@ -7,7 +7,10 @@ var map_size = Vector2(16,16)
 
 onready var camera = $Camera2D
 onready var map    = $TileMap
-onready var cursor = $Cursor
+onready var cursor = $TileMap/Cursor
+onready var players_a = $TileMap/Players/TeamA
+onready var players_b = $TileMap/Players/TeamB
+onready var overlay   = $TileMap/Overlay
 
 var game_over = false
 var current_player = null
@@ -27,10 +30,12 @@ var players = {
 func _ready():
 	generate_terain()
 	generate_graph()
+	correct_terrain()
 	set_process(true)
 	set_process_input(true)
 	generate_players()
 	game_over = false
+	$Camera2D/AnimationPlayer.play("Start")
 
 func _input(event):
 	if game_over:
@@ -98,12 +103,48 @@ func generate_terain():
 			var v = softnoise.openSimplex2D(x*0.2, y*0.2)
 			if v < -0.4:
 				tilemap.set_cell(x, y, -1)
-			elif v < 0:
-				tilemap.set_cell(x, y, 2)
-			elif v < 0.5:
-				tilemap.set_cell(x, y, 1)
-			else:
+			elif v < -0.1:
 				tilemap.set_cell(x, y, 7)
+			elif v < 0.5:
+				tilemap.set_cell(x, y, 2)
+			else:
+				tilemap.set_cell(x, y, 3)
+				
+	# Fix starting corners:
+	for x in range(3):
+		for y in range(3):
+			var cell = tilemap.get_cell(x, y)
+			if !accessible_cell(cell):
+				tilemap.set_cell(x, y, 7)
+				
+			cell = tilemap.get_cell(map_size.x - x - 1, map_size.y - y - 1)
+			if !accessible_cell(cell):
+				tilemap.set_cell(map_size.x - x - 1, map_size.y - y - 1, 7)
+			
+func correct_terrain():
+	var tilemap = $TileMap
+	var path = traversing_graph.get_point_path(get_cell_id(1,1), get_cell_id(map_size.x - 2, map_size.x - 2))
+	if path.size() == 0:
+		for x in range(1, floor(map_size.x / 2)):
+			if !accessible_cell(tilemap.get_cell(x, 2)):
+				tilemap.set_cell(x, 2, 7) 
+			if !accessible_cell(tilemap.get_cell(x, 3)):
+				tilemap.set_cell(x, 3, 7) 
+			if !accessible_cell(tilemap.get_cell(map_size.x - x - 1, map_size.y - 3)):
+				tilemap.set_cell(map_size.x - x - 1, map_size.y - 3, 7) 
+			if !accessible_cell(tilemap.get_cell(map_size.x - x - 1, map_size.y - 4)):
+				tilemap.set_cell(map_size.x - x - 1, map_size.y - 4, 7) 
+			
+		for y in range(1, map_size.y / 2):
+			if !accessible_cell(tilemap.get_cell(floor(map_size.x / 2), y)):
+				tilemap.set_cell(floor(map_size.x / 2), y, 7) 
+			if !accessible_cell(tilemap.get_cell(floor(map_size.x / 2), map_size.y - y - 2)):
+				tilemap.set_cell(floor(map_size.x / 2), map_size.y - y - 2, 7) 
+
+		generate_graph()
+	
+func accessible_cell(cell):
+	return cell > 0 and cell != 3
 
 
 func get_cell_id(x, y):
@@ -120,7 +161,7 @@ func generate_graph():
 	# Add nodes
 	for x in range(0, map_size.x):
 		for y in range(0, map_size.y):
-			if tilemap.get_cell(x, y) >= 0:
+			if accessible_cell(tilemap.get_cell(x, y)):
 				traversing_graph.add_point(get_cell_id(x, y), Vector3(x, y, 0))  
 	
 	# Add connections
@@ -129,10 +170,10 @@ func generate_graph():
 			var cell_id = get_cell_id(x, y)
 			if traversing_graph.has_point(cell_id):
 				# get neighbours
-				if tilemap.get_cell(x + 1, y) >= 0:
+				if accessible_cell(tilemap.get_cell(x + 1, y)):
 					traversing_graph.connect_points(cell_id, get_cell_id(x+1, y))
 					
-				if tilemap.get_cell(x, y + 1) >= 0:
+				if accessible_cell(tilemap.get_cell(x, y + 1)):
 					traversing_graph.connect_points(cell_id, get_cell_id(x, y + 1))
 					
 
@@ -152,7 +193,7 @@ func generate_players():
 		new_player.init(self, true)
 		new_player.add_to_group("Opponent")
 		players["a"].append(new_player)
-		$Players/TeamA.add_child(new_player)
+		players_a.add_child(new_player)
 		place_player(new_player, "top")
 
 	for i in range(3):
@@ -161,8 +202,9 @@ func generate_players():
 		new_player.init(self, false)
 		new_player.add_to_group("Player")
 		players["b"].append(new_player)
-		$Players/TeamB.add_child(new_player)
+		players_b.add_child(new_player)
 		place_player(new_player, "bottom")
+		
 
 func get_random_starting_pos(corner):
 	var x = randi() % 3
@@ -179,11 +221,11 @@ func enemy_placed_at(map_pos):
 	return null
 
 func player_placed_at(map_pos):
-	for player in $Players/TeamA.get_children():
+	for player in players_a.get_children():
 		if player.map_pos == map_pos and player.alive():
 			return player
 
-	for player in $Players/TeamB.get_children():
+	for player in players_b.get_children():
 		if player.map_pos == map_pos and player.alive():
 			return player
 
@@ -195,11 +237,18 @@ func place_player(player, corner):
 	while player_placed_at(map_pos) != null:
 		map_pos = get_random_starting_pos(corner)
 	player.set_map_position(map_pos)
+	
+	var cell = $TileMap.get_cellv(map_pos)
+	if cell < 0:
+		$TileMap.set_cellv(map_pos, 7)
+	if cell == 3:
+		$TileMap.set_cellv(map_pos, 2)
+
 
 func select_player_at(map_pos):
 	var player = player_placed_at(map_pos)
 	if player and player.is_in_group("Player"):
-		for player in $Players/TeamB.get_children():
+		for player in players_b.get_children():
 			player.unselect()
 		
 		if player.selected:
@@ -221,7 +270,7 @@ func update_selected_player_info():
 		
 
 func slice_border():
-	$Overlay.clear()	
+	overlay.clear()	
 	for i in range (sliced_border_width, map_size.x - sliced_border_width ):
 		destroy_cell(sliced_border_width, i)
 		destroy_cell(map_size.x - sliced_border_width - 1, i)
@@ -232,7 +281,7 @@ func slice_border():
 	generate_graph()		
 
 func mark_border():
-	$Overlay.clear()
+	overlay.clear()
 	
 	for i in range (sliced_border_width, map_size.x - sliced_border_width ):
 		mark_cell(sliced_border_width, i)
@@ -253,7 +302,7 @@ func destroy_cell(x, y):
 			
 func mark_cell(x, y):
 	if $TileMap.get_cell(x, y) >= 0:
-	  $Overlay.set_cell(x, y, 5)
+	  overlay.set_cell(x, y, 5)
 	
 
 func perform_ai_moves():

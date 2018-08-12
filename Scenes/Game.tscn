@@ -1,14 +1,14 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://Scripts/World.gd" type="Script" id=1]
 [ext_resource path="res://Assets/bg.jpg" type="Texture" id=2]
 [ext_resource path="res://Assets/tileset.tres" type="TileSet" id=3]
-[ext_resource path="res://Scripts/Camera2D.gd" type="Script" id=4]
-[ext_resource path="res://Assets/Exo2-Regular.otf" type="DynamicFontData" id=5]
-[ext_resource path="res://Assets/cursor_flat.png" type="Texture" id=6]
-[ext_resource path="res://Assets/light.png" type="Texture" id=7]
+[ext_resource path="res://Assets/cursor_flat.png" type="Texture" id=4]
+[ext_resource path="res://Scripts/Camera2D.gd" type="Script" id=5]
+[ext_resource path="res://Assets/light.png" type="Texture" id=6]
+[ext_resource path="res://Assets/Exo2-Regular.otf" type="DynamicFontData" id=7]
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=1]
 
 resource_name = "bouncing"
 length = 1.0
@@ -27,15 +27,65 @@ tracks/0/keys = {
 "values": [ Vector2( 0, 0 ), Vector2( 0, -20 ) ]
 }
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="Animation" id=10]
+
+resource_name = "Floating"
+length = 3.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1.5 ),
+"transitions": PoolRealArray( -1.93769, 1 ),
+"update": 0,
+"values": [ Vector2( 8, 457.976 ), Vector2( 8, 450 ) ]
+}
+
+[sub_resource type="Animation" id=2]
+
+resource_name = "Start"
+length = 3.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 2.53785, 1 ),
+"update": 0,
+"values": [ Vector2( 2.2, 2.2 ), Vector2( 1.6, 1.6 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( 4, 1 ),
+"update": 0,
+"values": [ Vector2( 8, 456 ), Vector2( 8, 700 ) ]
+}
+
+[sub_resource type="DynamicFont" id=3]
 
 size = 40
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 5 )
+font_data = ExtResource( 7 )
 _sections_unfolded = [ "Font", "Settings" ]
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=4]
 
 resource_name = "Defeat"
 length = 4.0
@@ -128,7 +178,7 @@ tracks/6/keys = {
 } ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 
 resource_name = "Victory"
 length = 4.0
@@ -221,31 +271,31 @@ tracks/6/keys = {
 } ]
 }
 
-[sub_resource type="DynamicFont" id=8]
+[sub_resource type="DynamicFont" id=6]
 
 size = 20
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 5 )
+font_data = ExtResource( 7 )
 _sections_unfolded = [ "Font", "Settings" ]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=7]
 
 size = 25
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 5 )
+font_data = ExtResource( 7 )
 _sections_unfolded = [ "Font", "Font/fallback", "Settings" ]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=8]
 
 size = 18
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 5 )
+font_data = ExtResource( 7 )
 _sections_unfolded = [ "Font", "Settings" ]
 
-[sub_resource type="Environment" id=4]
+[sub_resource type="Environment" id=9]
 
 background_mode = 4
 background_sky_custom_fov = 0.0
@@ -324,6 +374,25 @@ adjustment_contrast = 1.2
 adjustment_saturation = 0.7
 _sections_unfolded = [ "Adjustments", "Background" ]
 
+[sub_resource type="Animation" id=11]
+
+resource_name = "FloatTerrain"
+length = 4.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("TileMap:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 2 ),
+"transitions": PoolRealArray( -2.14219, -2.14219 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 0, -7 ) ]
+}
+
 [node name="Game" type="Node2D" index="0"]
 
 script = ExtResource( 1 )
@@ -354,6 +423,7 @@ stretch_mode = 7
 
 [node name="TileMap" type="TileMap" parent="." index="1"]
 
+position = Vector2( 0, -7 )
 mode = 1
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 128, 74 )
@@ -373,10 +443,31 @@ format = 1
 tile_data = PoolIntArray(  )
 _sections_unfolded = [ "Cell", "Collision", "Occluder", "Transform" ]
 
-[node name="Overlay" type="TileMap" parent="." index="2"]
+[node name="Cursor" type="Sprite" parent="TileMap" index="0"]
+
+modulate = Color( 0.184021, 0.411129, 0.703125, 0.729255 )
+position = Vector2( -0.0825005, 55.2881 )
+texture = ExtResource( 4 )
+offset = Vector2( 0.0825005, 15.7119 )
+flip_h = true
+region_rect = Rect2( 444, 640, 111, 128 )
+_sections_unfolded = [ "Offset", "Region", "Visibility" ]
+
+[node name="Players" type="Node2D" parent="TileMap" index="1"]
+
+editor/display_folded = true
+position = Vector2( 0, 7 )
+z_index = 5
+_sections_unfolded = [ "Z Index" ]
+
+[node name="TeamA" type="Node2D" parent="TileMap/Players" index="0"]
+
+[node name="TeamB" type="Node2D" parent="TileMap/Players" index="1"]
+
+[node name="Overlay" type="TileMap" parent="TileMap" index="2"]
 
 modulate = Color( 1, 1, 1, 0.756902 )
-position = Vector2( 0, -20 )
+z_index = 1
 mode = 1
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 128, 74 )
@@ -394,26 +485,26 @@ collision_mask = 1
 occluder_light_mask = 1
 format = 1
 tile_data = PoolIntArray(  )
-_sections_unfolded = [ "Cell", "Collision", "Occluder", "Transform", "Visibility" ]
+_sections_unfolded = [ "Cell", "Collision", "Occluder", "Transform", "Visibility", "Z Index" ]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Overlay" index="0"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TileMap/Overlay" index="0"]
 
 root_node = NodePath("..")
 autoplay = "bouncing"
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 0.5
-anims/bouncing = SubResource( 3 )
+anims/bouncing = SubResource( 1 )
 blend_times = [  ]
 _sections_unfolded = [ "Playback Options" ]
 
-[node name="Camera2D" type="Camera2D" parent="." index="3"]
+[node name="Camera2D" type="Camera2D" parent="." index="2"]
 
-position = Vector2( 8, 456 )
+position = Vector2( 8, 450 )
 anchor_mode = 1
 rotating = false
 current = true
-zoom = Vector2( 1.6, 1.6 )
+zoom = Vector2( 2.17174, 2.17174 )
 limit_left = -2000
 limit_top = -1000
 limit_right = 2000
@@ -432,12 +523,49 @@ drag_margin_bottom = 0.2
 editor_draw_screen = true
 editor_draw_limits = false
 editor_draw_drag_margin = false
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 _sections_unfolded = [ "Drag Margin", "Editor", "Limit", "Offset", "Smoothing", "Transform", "Visibility", "Z Index" ]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." index="4"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Camera2D" index="0"]
 
-editor/display_folded = true
+root_node = NodePath("..")
+autoplay = ""
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/Floating = SubResource( 10 )
+anims/Start = SubResource( 2 )
+blend_times = [  ]
+
+[node name="Light2D" type="Light2D" parent="Camera2D" index="1"]
+
+visible = false
+scale = Vector2( 3, 3 )
+enabled = true
+editor_only = false
+texture = ExtResource( 6 )
+offset = Vector2( 0, 0 )
+texture_scale = 1.0
+color = Color( 1, 1, 1, 1 )
+energy = 1.0
+mode = 2
+range_height = 0.0
+range_z_min = -1024
+range_z_max = 1024
+range_layer_min = 0
+range_layer_max = 0
+range_item_cull_mask = 1
+shadow_enabled = false
+shadow_color = Color( 0, 0, 0, 0 )
+shadow_buffer_size = 2048
+shadow_gradient_length = 0.0
+shadow_filter = 0
+shadow_filter_smooth = 0.0
+shadow_item_cull_mask = 1
+_sections_unfolded = [ "Range", "Shadow", "Transform" ]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." index="3"]
+
 layer = 2
 offset = Vector2( 0, 0 )
 rotation = 0.0
@@ -477,7 +605,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 3 )
 text = "Victory!"
 align = 1
 percent_visible = 1.0
@@ -502,7 +630,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 3 )
 text = "You have been defeated by an inferior AI."
 align = 1
 percent_visible = 1.0
@@ -535,8 +663,8 @@ autoplay = ""
 playback_process_mode = 1
 playback_default_blend_time = 0.0
 playback_speed = 1.0
-anims/Defeat = SubResource( 7 )
-anims/Victory = SubResource( 6 )
+anims/Defeat = SubResource( 4 )
+anims/Victory = SubResource( 5 )
 blend_times = [  ]
 
 [node name="Can you repeat" type="Label" parent="CanvasLayer/GameOver" index="4"]
@@ -555,7 +683,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 6 )
 text = "Now prove it's not a coincidence!"
 percent_visible = 1.0
 lines_skipped = 0
@@ -579,7 +707,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 6 )
 text = "Shame on you! Go back and win this battle."
 percent_visible = 1.0
 lines_skipped = 0
@@ -606,30 +734,7 @@ percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
 
-[node name="Button" type="Button" parent="CanvasLayer" index="2"]
-
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 0.0
-anchor_bottom = 0.0
-margin_right = 12.0
-margin_bottom = 20.0
-rect_pivot_offset = Vector2( 0, 0 )
-rect_clip_content = false
-focus_mode = 2
-mouse_filter = 0
-mouse_default_cursor_shape = 0
-size_flags_horizontal = 1
-size_flags_vertical = 1
-toggle_mode = false
-enabled_focus_mode = 2
-shortcut = null
-group = null
-text = "Slice"
-flat = false
-align = 1
-
-[node name="Button2" type="Button" parent="CanvasLayer" index="3"]
+[node name="Button2" type="Button" parent="CanvasLayer" index="2"]
 
 anchor_left = 0.0
 anchor_top = 0.0
@@ -654,7 +759,7 @@ text = "New terrain"
 flat = false
 align = 1
 
-[node name="Panel" type="Panel" parent="CanvasLayer" index="4"]
+[node name="Panel" type="Panel" parent="CanvasLayer" index="3"]
 
 editor/display_folded = true
 anchor_left = 1.0
@@ -686,7 +791,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 7 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Selected unit"
 percent_visible = 1.0
@@ -710,7 +815,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 1, 0.988281, 0.988281, 1 )
 text = "Action points: 3"
 percent_visible = 1.0
@@ -734,7 +839,7 @@ mouse_filter = 2
 mouse_default_cursor_shape = 0
 size_flags_horizontal = 1
 size_flags_vertical = 4
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 1, 0.988281, 0.988281, 1 )
 text = "Hitpoints: 4 / 5"
 percent_visible = 1.0
@@ -767,55 +872,19 @@ text = "End turn"
 flat = false
 align = 1
 
-[node name="Cursor" type="Sprite" parent="." index="5"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="4"]
 
-modulate = Color( 0.184021, 0.411129, 0.703125, 0.729255 )
-position = Vector2( 0, 64 )
-texture = ExtResource( 6 )
-offset = Vector2( 0, -66 )
-region_rect = Rect2( 444, 640, 111, 128 )
-_sections_unfolded = [ "Offset", "Region", "Visibility" ]
+environment = SubResource( 9 )
 
-[node name="Players" type="Node2D" parent="." index="6"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="5"]
 
-editor/display_folded = true
-
-[node name="TeamA" type="Node2D" parent="Players" index="0"]
-
-[node name="TeamB" type="Node2D" parent="Players" index="1"]
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="7"]
-
-environment = SubResource( 4 )
-
-[node name="Light2D" type="Light2D" parent="." index="8"]
-
-position = Vector2( 340, 240 )
-scale = Vector2( 3, 3 )
-enabled = true
-editor_only = false
-texture = ExtResource( 7 )
-offset = Vector2( 0, 0 )
-texture_scale = 1.0
-color = Color( 1, 1, 1, 1 )
-energy = 1.0
-mode = 2
-range_height = 0.0
-range_z_min = -1024
-range_z_max = 1024
-range_layer_min = 0
-range_layer_max = 0
-range_item_cull_mask = 1
-shadow_enabled = false
-shadow_color = Color( 0, 0, 0, 0 )
-shadow_buffer_size = 2048
-shadow_gradient_length = 0.0
-shadow_filter = 0
-shadow_filter_smooth = 0.0
-shadow_item_cull_mask = 1
-_sections_unfolded = [ "Range", "Shadow", "Transform" ]
-
-[connection signal="pressed" from="CanvasLayer/Button" to="." method="slice_border"]
+root_node = NodePath("..")
+autoplay = "FloatTerrain"
+playback_process_mode = 1
+playback_default_blend_time = 0.0
+playback_speed = 1.0
+anims/FloatTerrain = SubResource( 11 )
+blend_times = [  ]
 
 [connection signal="pressed" from="CanvasLayer/Button2" to="." method="reset_game"]
 

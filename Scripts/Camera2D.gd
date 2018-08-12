@@ -34,7 +34,6 @@ func _input(event):
 			dragging = false
 			
 	if event is InputEventMouseMotion and dragging:
-		print(event)
 		position = position - event.relative
 
 			

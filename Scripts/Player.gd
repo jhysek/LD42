@@ -17,7 +17,8 @@ var units = [
 		ap          = 5,
 		hp          = 20,
 		attack_cost = 2,
-		damage      = 2 
+		damage      = 2,
+		speed       = 10, 
 	},
 	
 	# KNIGHT
@@ -26,7 +27,8 @@ var units = [
 	    ap          = 3,
 		hp          = 40,
 		attack_cost = 3,
-		damage      = 10
+		damage      = 10,
+		speed       = 2
 	},
 	
 	# ARCHER
@@ -35,7 +37,8 @@ var units = [
 		ap          = 3,
 		hp          = 15,
 		attack_cost = 2,
-		damage      = 5
+		damage      = 5,
+		speed       = 5
 	}
 ]
 
@@ -54,11 +57,26 @@ var attack_cost = 0
 
 var max_ap = 0
 var max_hp = 0
+var speed = 100
 
 var action_radius = {}
 var attack_radius = {}
 
+var target_position = Vector2()
+var moving          = false
 
+
+func _ready():
+	set_process(true)
+	
+func _process(delta):
+	if moving:
+		if position != target_position:
+			position.x = lerp(position.x, target_position.x, delta * speed)
+			position.y = lerp(position.y, target_position.y, delta * speed)
+		else:
+			moving = false
+			
 func init(game, is_ai):
 	map  = game.map
 	
@@ -75,6 +93,7 @@ func set_type(type):
 		unit_type = type
 		ap = units[unit_type].ap
 		hp = units[unit_type].hp
+		speed = units[unit_type].speed
 		max_hp = hp
 		max_ap = ap
 		attack_cost = units[unit_type].attack_cost
@@ -136,8 +155,12 @@ func jump_to(pos):
 	  cost = abs(cost.x) + abs(cost.y)
 	  ap = ap - cost
 	  update_ap_indicator()
-	  set_map_position(pos)
-	  show_radius()
+	  # set_map_position(pos)
+	  target_position = map.map_to_world(pos)
+	  hide_radius()
+	  moving = true
+	  map_pos = pos
+
 	
 func select():
 	if status != STATUS_DEAD:
@@ -161,6 +184,7 @@ func alive():
 	return status != STATUS_DEAD
 	
 func count_action_radius_from(pos, iterations, positions):
+	var game = get_node("/root/Game")
 	if iterations > 0 and map.get_cell(pos.x, pos.y) >= 0:
 	
 		var left   = pos + Vector2(1,0)
@@ -170,16 +194,16 @@ func count_action_radius_from(pos, iterations, positions):
 	
 	    # TODO: scout can fly over holes
 		positions[pos] = true
-		if map.get_cellv(left) >= 0:
+		if game.accessible_cell(map.get_cellv(left)):
 			action_radius[left]   = true
 		
-		if map.get_cellv(right) >= 0:
+		if game.accessible_cell(map.get_cellv(right)):
 			action_radius[right]  = true
 		
-		if map.get_cellv(top) >= 0:
+		if game.accessible_cell(map.get_cellv(top)):
 			action_radius[top]    = true
 		
-		if map.get_cellv(bottom) >= 0:
+		if game.accessible_cell(map.get_cellv(bottom)):
 			action_radius[bottom] = true
 			
 		iterations = iterations - 1
