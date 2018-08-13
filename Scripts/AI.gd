@@ -50,13 +50,13 @@ func get_path_to_enemy():
 func enemy_in_attack_radius():
 	for spot in player.attack_radius.keys():
 		for enemy in enemies:
-			if enemy.map_pos == spot:
+			if enemy.map_pos == spot and enemy.alive():
 				return enemy
 			
 func enemy_in_action_radius():
 	for spot in player.action_radius.keys():
 		for enemy in enemies:
-			if enemy.map_pos == spot:
+			if enemy.map_pos == spot and enemy.alive():
 				return enemy
 
 func get_furthermost_reachable_path_point(path):
